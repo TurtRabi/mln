@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MLN131</title>
+  <link rel="stylesheet" href="assets/css/templatemo-prism-flux.css" />
+</head>
+<body>
+  <!-- Header -->
+  <header class="header" id="header">
+    <nav class="nav-container">
+      <a href="index.html?page=gioi-thieu" class="logo">
+        <div class="logo-icon"><img src="images/logo.png" alt="MLN131" class="site-logo"></div>
+        <span class="logo-text"><span class="prism">MLN</span><span class="flux">131</span></span>
+      </a>
+      <ul class="nav-menu" id="navMenu">
+        <li><a class="nav-link" href="index.html?page=gioi-thieu">Giới thiệu</a></li>
+        <li><a class="nav-link" href="index.html?page=nang-luc">Hướng theo năng lực</a></li>
+        <li><a class="nav-link" href="index.html?page=nhu-cau">Hướng theo nhu cầu</a></li>
+        <li><a class="nav-link" href="index.html?page=vi-sao">Câu hỏi CQ</a></li>
+        <li><a class="nav-link" href="index.html?page=ket-luan">Kết luận</a></li>
+      </ul>
+      <div class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></div>
+    </nav>
+  </header>
+
+  <!-- Ổ cắm trang con -->
+  <main id="page-content"></main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <span class="logo-text"><span class="flux">MLN131</span></span>
+        <p class="footer-description">làm theo năng lực, hưởng theo lao động</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="copyright">© 2025 MLN131. All rights reserved.</div>
+      <div class="footer-credits">Designed by <a href="#">Lê Thị Minh Hoàn</a></div>
+    </div>
+  </footer>
+
+  <script src="assets/js/app.js"></script>
+  <script>
+    // Router siêu gọn
+    const params = new URLSearchParams(location.search);
+    const page = (params.get('page') || 'gioi-thieu').trim();
+
+    const outlet = document.getElementById('page-content');
+    outlet.innerHTML = '<div style="color:#ccc;text-align:center;padding:40px">Đang tải...</div>';
+
+    fetch(`${page}.html`, {cache: 'no-cache'})
+      .then(r => {
+        if (!r.ok) throw new Error('404');
+        return r.text();
+      })
+      .then(html => {
+        outlet.innerHTML = html;
+        // Gọi lại init sau khi DOM mới đã gắn
+        if (window.App && typeof App.onPageLoaded === 'function') {
+          App.onPageLoaded(page);
+        }
+      })
+      .catch(() => {
+        outlet.innerHTML = '<div style="color:#f66;text-align:center;padding:40px">Không tìm thấy trang.</div>';
+      });
+      
+  </script>
+  <script>
+  const reveals = document.querySelectorAll('.reveal');
+  const IO = new IntersectionObserver(es=>{
+    es.forEach(e=>{ 
+      if(e.isIntersecting){ 
+        e.target.classList.add('in-view'); 
+        IO.unobserve(e.target); 
+      }
+    });
+  },{threshold:.15});
+  reveals.forEach(el=>IO.observe(el));
+</script>
+</body>
+</html>
